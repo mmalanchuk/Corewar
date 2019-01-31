@@ -1,0 +1,169 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_line.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adayrabe <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/01/31 14:51:06 by adayrabe          #+#    #+#             */
+/*   Updated: 2019/01/31 14:51:08 by adayrabe         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdio.h>
+#include "asm.h"
+#include <unistd.h>
+
+void	make_address(t_address **head, char *name)
+{
+	t_address *temp;
+
+	if (!(*head))
+	{
+		*head = (t_address *)malloc(sizeof(t_address));
+		temp = *head;
+	}
+	else
+	{
+		temp = *head;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = (t_address *)malloc(sizeof(t_address));
+		temp = temp->next;
+	}
+	temp->name = ft_strdup(name);
+	temp->next = NULL;
+	temp->operations = NULL;
+	temp->length = 0;
+}
+
+t_error	*make_error(int line, int col, int num, t_address **head)
+{
+	t_error *res;
+
+	res = (t_error *)malloc(sizeof(t_error));
+	res->line = line;
+	res->column = col;
+	res->num = num;
+	res->head = head;
+	return (res);
+}
+
+char	*find_name(char *str, int *col)
+{
+	int		i;
+	int		len;
+	char	*res;
+
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t') && ++i)
+		(*col)++;
+	len = 0;
+	while (str[i + len] && str[i + len] != LABEL_CHAR && str[i + len] != ' '
+			&& str[i + len] != '\t' && ft_strchr(LABEL_CHARS, str[i + len]))
+		len++;
+	if (str[i + len] == ' ' || str[i + len] == '\t' || !str[i + len])
+		return (NULL);
+	if (!ft_strchr(LABEL_CHARS, str[i + len] && str[i + len] != LABEL_CHAR))
+		return (ft_strdup(""));
+	res = ft_strnew(len);
+	(*col) += len;
+	len = 0;
+	while (str && str[i] != LABEL_CHAR)
+	{
+		res[len++] = str[i];
+		i++;
+	}
+	(*col)++;
+	return (res);
+}
+
+int		check_operator(int row, t_address **head, char *line, int col)
+{
+	int i;
+
+	i = col - 1;
+	while (line[++i] && (line[i] == ' ' || line[i] == '\t' ||
+											line[i] == SEPARATOR_CHAR))
+		if (line[i] == SEPARATOR_CHAR)
+			ft_handle_errors(make_error(row, col, 16, head), NULL);
+	if (line[i] == COMMENT_CHAR || line[i] == '\0')
+		return (0);
+	while (line[i] && line[i] != ' ' && line[i] != '\t' &&
+												line[i] != SEPARATOR_CHAR)
+		i++;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (line[i] == SEPARATOR_CHAR)
+		ft_handle_errors(make_error(row, i, 1, head), NULL);
+	else if (line[i])
+		ft_handle_errors(make_error(row, col, 0, head), NULL);
+	else
+		ft_handle_errors(make_error(row, i, 2, head), NULL);
+	return (0);
+}
+
+void	assign(t_operation *temp, int l)
+{
+	temp->label1 = NULL;
+	temp->label2 = NULL;
+	temp->position1 = 0;
+	temp->position2 = 0;
+	temp->line = l;
+	temp->code = NULL;
+	temp->length = 0;
+	temp->next = NULL;
+}
+
+void	add_operation(t_address *head, int l)
+{
+	t_operation	*temp;
+	t_address	*addr;
+
+	addr = head;
+	while (addr->next)
+		addr = addr->next;
+	if (!addr->operations)
+	{
+		addr->operations = (t_operation *)malloc(sizeof(t_operation));
+		temp = addr->operations;
+	}
+	else
+	{
+		temp = addr->operations;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = (t_operation *)malloc(sizeof(t_operation));
+		temp = temp->next;
+	}
+	assign(temp, l);
+}
+
+int		parse_line(char *line, t_address **head, int row)
+{
+	char		*name;
+	t_argument	**arguments;
+	int			res;
+	int			col;
+
+	col = 0;
+	name = find_name(line, &col);
+	if (name && !name[0])
+		ft_handle_errors(make_error(row, col, 3, head), NULL);
+	(name || !(*head)) ? make_address(head, name) : 0;
+	add_operation(*head, row);
+	ft_strdel(&name);
+	arguments = ft_split_line(line, row, col);
+	if (!arguments && !check_operator(row, head, line, col))
+		return (0);
+	res = ft_parse_operations(arguments, head, row, &line);
+	col = -1;
+	while (arguments && arguments[++col])
+	{
+		ft_strdel(&(arguments[col]->arg));
+		free(arguments[col]);
+		arguments[col] = NULL;
+	}
+	free(arguments);
+	return (res);
+}
