@@ -1,13 +1,5 @@
 #include "corewar_vm.h"
 
-//TODO read non-valid codage octal
-/*
- * pc goes codage len
- * if no 3 arg it doesnt go codage len
- * if wrong
- */
-
-
 int32_t	get_reg_index(t_env *vm, t_process *pointer)
 {
 	return (read_bytes(ARENA, PC, REG_IDX_SIZE));

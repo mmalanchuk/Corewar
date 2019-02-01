@@ -193,7 +193,7 @@ t_op op_tab[16] =
 						.exec_cycles = 50,
 						.change_carry = 1,
 						.description = "long load index",
-						.idx_mod = false,
+						.idx_mod = true,
 						.f_ptr = &op_lldi
 				},
 				{

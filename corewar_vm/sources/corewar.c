@@ -32,7 +32,6 @@ void get_current_op(t_env *vm, t_process *pointer)
 	PC += OP_SIZE;
 	if (op_code >= 1 && op_code <= 16)
 		OP = op_tab[IDX(op_code)];
-//	if (OP.arg_codes)
 }
 
 void play_corewar(t_env *vm, t_process *pointer)

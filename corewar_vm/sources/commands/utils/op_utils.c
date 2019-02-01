@@ -47,6 +47,8 @@ void	step_over(t_process *pointer)
 	PC += STEP;
 }
 
+//TODO copy carriage function
+
 void	copy_process(t_env *vm, t_process *pointer, int where)
 {
 

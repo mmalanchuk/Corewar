@@ -1,44 +1,6 @@
 #include "corewar_vm.h"
 #include "debug.h"
 
-
-static bool	digits_in_str(const char *str)
-{
-	while (*str)
-	{
-		if (!ft_isdigit(*str))
-			return (false);
-		str++;
-	}
-	return (true);
-}
-
-//TODO add check if -n arg is larger than players number
-int		get_next_player_id(char *argv)
-{
-	int id;
-
-	if (!digits_in_str(argv))
-		throw_error(FLAG_ERR, argv);
-	id = ft_atoi(argv);
-	if (id < 1 || id > MAX_PLAYERS)
-		throw_error(FLAG_ERR, argv);
-	return (id);
-}
-
-int get_dump_cycles(char *argv)
-{
-	int nbr_cycles;
-
-	if (!digits_in_str(argv))
-		throw_error(FLAG_ERR, argv);
-	nbr_cycles = ft_atoi(argv);
-	//TODO is there MAX_NUMBER_OF_CYCLES ?
-	if (nbr_cycles < 0)
-		throw_error(FLAG_ERR, argv);
-	return (nbr_cycles);
-}
-
 void 	set_defined_ids(t_env *vm, t_champ *lst)
 {
 	while (lst)
@@ -46,7 +8,7 @@ void 	set_defined_ids(t_env *vm, t_champ *lst)
 		if (lst->id != -1)
 		{
 			if (lst->id > vm->players_num || PLAYER[lst->id - 1] != 0)
-				throw_error(BAD_PLAYER_ID, lst->name);
+				throw_error(FLAG_ERR_N, NULL);
 			else
 				PLAYER[lst->id - 1] = lst;
 		}
@@ -73,26 +35,35 @@ void	set_players_to_vm(t_env *vm, t_champ *lst)
 	}
 }
 
-void parse_arguments(int argc, char **argv, t_env *vm)
+static void	find_flag(char ***argv, t_cw_flags *flags)
 {
-	int		i;
-	int		id;
+	int i;
+
+	i = 0;
+	while (i < MAX_OPTIONS)
+	{
+		if (ft_strequ(**argv, g_cw_flags[i].name))
+			return (g_cw_flags[i].f_ptr(argv, flags));
+		i++;
+	}
+	throw_error(OPT_ERR, **argv);
+}
+
+void	parse_arguments(char **argv, t_env *vm)
+{
 	t_champ *lst;
 
 	lst = NULL;
-	i = 1;
-	id = -1;
-	while (i < argc)
+	++argv;
+	while (*argv)
 	{
-		if (is_cor_file(argv[i]))
-			parse_player(vm, argv[i], &lst, &id);
-		else if (ft_strequ("-n", argv[i]) && is_cor_file(argv[i + 2]) && ++i)
-			id = get_next_player_id(argv[i]);
-		else if (ft_strequ("-dump", argv[i]) && i + 1 < argc && ++i)
-			vm->dump_cycles = get_dump_cycles(argv[i]);
+		if (is_cor_file(*argv))
+			parse_player(vm, *argv, &lst, &vm->flags.n);
+		else if (**argv == '-' && ++(*argv))
+			find_flag(&(argv), &vm->flags);
 		else
 			corewar_usage();
-		i++;
+		argv++;
 	}
 	set_players_to_vm(vm, lst);
 #ifdef DEBUG

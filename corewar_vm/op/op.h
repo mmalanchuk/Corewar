@@ -85,6 +85,8 @@ typedef struct		header_s
   char				comment[COMMENT_LENGTH + 1];
 }					header_t;
 
+struct	s_process;
+struct s_env;
 typedef struct s_op
 {
 	char		*name;
@@ -97,7 +99,7 @@ typedef struct s_op
 	bool		arg_codes;
 	bool		t_dir_size_diff;
 	bool		idx_mod;
-	void		(*f_ptr)();
+	void		(*f_ptr)(struct s_env *vm, struct s_process *pointer);
 }				t_op;
 
 extern t_op	op_tab[16];

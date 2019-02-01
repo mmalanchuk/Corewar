@@ -17,6 +17,9 @@
 # define OP (pointer->op)
 # define ADDR (pointer->addr)
 # define STEP (pointer->pc_step)
+# define CYCLES (pointer->op->exec_cycles)
+
+# define MAX_OPTIONS 2
 
 /**
  * uint8_t/OCTET	is unsigned char
@@ -39,18 +42,6 @@ typedef struct	s_player
 	struct s_player	*next;
 }				t_champ;
 
-typedef	struct
-{
-	uint8_t		arena[MEM_SIZE];
-	int			dump_cycles;
-	t_champ		*players[MAX_PLAYERS];
-	unsigned	players_num;
-	int			cycles_to_die;
-	int			checks_count;
-	int			last_alive_id;
-	int			cycle;
-}				t_env;
-
 typedef struct	s_process
 {
 	int					id;
@@ -67,6 +58,25 @@ typedef struct	s_process
 	struct s_process	*next;
 }				t_process;
 
+typedef struct	s_cw_flags
+{
+	int	n;
+	int	dump;
+}				t_cw_flags;
+
+typedef	struct
+{
+	uint8_t		arena[MEM_SIZE];
+	t_cw_flags	flags;
+//	int			dump_cycles;
+	t_champ		*players[MAX_PLAYERS];
+	unsigned	players_num;
+	int			cycles_to_die;
+	int			checks_count;
+	int			last_alive_id;
+	int			cycle;
+}				t_env;
+
 typedef struct
 {
 	char	*name;
@@ -74,9 +84,19 @@ typedef struct
 	bool	open;
 }	t_file;
 
+typedef struct	s_flags_disp
+{
+	char	*name;
+	void	(*f_ptr)(char***, t_cw_flags*);
+}				t_flag_disp;
 
-void		parse_arguments(int argc, char **argv, t_env *vm);
+void		parse_arguments(char **argv, t_env *vm);
 void		parse_player(t_env *vm, char *filename, t_champ **lst, int *id);
+
+extern t_flag_disp	g_cw_flags[];
+void		parse_champ_id(char ***argv, t_cw_flags *flags);
+void		parse_dump_cycles(char ***argv, t_cw_flags *flags);
+
 
 
 bool		is_cor_file(char *filename);

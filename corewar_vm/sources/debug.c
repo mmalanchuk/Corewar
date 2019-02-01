@@ -46,7 +46,7 @@ void	print_players_array(t_env *vm)
 void	print_vm(t_env *vm)
 {
 	ft_printf("Printing VM....\n");
-	ft_printf("Dump cycles: %d\n", vm->dump_cycles);
+	ft_printf("Dump cycles: %d\n", vm->flags.dump);
 	ft_printf("Number of Champions: %u\n", vm->players_num);
 	ft_printf("Printing players.....\n");
 	print_players_array(vm);
