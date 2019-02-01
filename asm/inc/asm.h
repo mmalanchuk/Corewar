@@ -71,5 +71,7 @@ void			free_operations(t_operation **head);
 void			add_label(t_operation *op, t_arg_type arg);
 void			add_dir_on_indir(t_argument *arg, int *position,
 	t_address *head, t_operation *op);
-void        make_code(t_address **head, t_header *header, unsigned char **word);
+void			make_code(t_address **head, t_header *header,
+	unsigned char **word);
+void			add_operation(t_address *head, int l);
 #endif

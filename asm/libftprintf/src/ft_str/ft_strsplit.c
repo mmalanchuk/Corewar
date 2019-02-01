@@ -48,27 +48,30 @@ static int	words(const char *s, char c)
 	return (words);
 }
 
+static void	free_arr(char ***arr, int j)
+{
+	int i;
+
+	i = 0;
+	while (i < j)
+	{
+		ft_strdel(&arr[0][i]);
+		i++;
+	}
+	free(*arr);
+}
+
 static int	do_a(char **res, int word, int *i, int len)
 {
 	res[word] = ft_strnew(len);
 	if (!res[word])
+	{
+		free_arr(&res, word);
 		return (1);
+	}
 	res[word - 1][*i] = '\0';
 	*i = 0;
 	return (0);
-}
-
-void free_arr(char ***arr, int j)
-{
-    int i;
-    
-    i = 0;
-    while (i < j)
-    {
-        ft_strdel(&arr[0][i]);
-        i++;
-    }
-    free(*arr);
 }
 
 char		**ft_strsplit(char const *s, char c)
@@ -79,9 +82,10 @@ char		**ft_strsplit(char const *s, char c)
 	int		word;
 	int		j;
 
-    if (!s)
-        return (NULL);
-	res = (char **)malloc(sizeof(char *) * (words(s, c) + 1));
+	if (!s)
+		return (NULL);
+	if (!(res = (char **)malloc(sizeof(char *) * (words(s, c) + 1))))
+		return (NULL);
 	i = 0;
 	flag = 0;
 	word = 0;
@@ -91,10 +95,7 @@ char		**ft_strsplit(char const *s, char c)
 	{
 		if (s[j] == c && flag != 0 && ++word)
 			if ((flag = do_a(res, word, &i, ft_len(&s[j + 1], c) + 1)) == 1)
-            {
-                free_arr(&res, j);
 				return (NULL);
-            }
 		(s[j] != c && ++i && ++flag) ? (res[word][i - 1] = s[j]) : 0;
 	}
 	res[word + (words(s, c) == 0 || (s[j - 1]) == c) * -1 + 1] = 0;

@@ -35,14 +35,8 @@ int				ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9' && ++i)
 	{
 		if (res > 9223372036854775807)
-		{
-			if (sign == -1)
-				return (0);
-			else
-				return (-1);
-		}
+			return ((sign == -1) - 1);
 		res = res * 10 + str[i - 1] - 48;
 	}
-	(sign == -1) ? res *= -1 : 0;
-	return ((int)res);
+	return ((int)(sign * res));
 }

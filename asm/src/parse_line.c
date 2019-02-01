@@ -103,42 +103,6 @@ int		check_operator(int row, t_address **head, char *line, int col)
 	return (0);
 }
 
-void	assign(t_operation *temp, int l)
-{
-	temp->label1 = NULL;
-	temp->label2 = NULL;
-	temp->position1 = 0;
-	temp->position2 = 0;
-	temp->line = l;
-	temp->code = NULL;
-	temp->length = 0;
-	temp->next = NULL;
-}
-
-void	add_operation(t_address *head, int l)
-{
-	t_operation	*temp;
-	t_address	*addr;
-
-	addr = head;
-	while (addr->next)
-		addr = addr->next;
-	if (!addr->operations)
-	{
-		addr->operations = (t_operation *)malloc(sizeof(t_operation));
-		temp = addr->operations;
-	}
-	else
-	{
-		temp = addr->operations;
-		while (temp->next)
-			temp = temp->next;
-		temp->next = (t_operation *)malloc(sizeof(t_operation));
-		temp = temp->next;
-	}
-	assign(temp, l);
-}
-
 int		parse_line(char *line, t_address **head, int row)
 {
 	char		*name;

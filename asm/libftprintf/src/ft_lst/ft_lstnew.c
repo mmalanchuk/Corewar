@@ -21,10 +21,10 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 		return (NULL);
 	res->content = malloc(content_size);
 	if (!res->content)
-    {
-        free(res);
+	{
+		free(res);
 		return (NULL);
-    }
+	}
 	if (content == NULL)
 	{
 		res->content_size = 0;

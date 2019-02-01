@@ -30,8 +30,8 @@ static int		ft_cat_n(char **src, char **line)
 	temp ? temp++ : 0;
 	CHECK_NULL((*line = ft_strnew(i)));
 	*line = ft_strncpy(*line, *src, i);
-    if (!src[0][0])
-        return (0);
+	if (!src[0][0])
+		return (0);
 	free(*src);
 	*src = NULL;
 	if (temp)
