@@ -53,7 +53,7 @@ char	**make_errors(char **errors)
 	errors[3] = "WRONG SYMBOL IN LABEL NAME";
 	errors[4] = "NOT ENOUGH ARGUMENTS";
 	errors[5] = "WRONG SYMBOL FOR ARGUMENT";
-	errors[6] = "NOT ENOUGH ARGUMENTS";
+	errors[6] = "SYMBOL AFTER LAST ARGUMENT";
 	errors[7] = "NOT ENOUGH ARGUMENTS OR NO SEPARATOR";
 	errors[8] = "WRONG REG NUMBER";
 	errors[9] = "WRONG SYMBOL, HAS TO BE DIGIT";

@@ -50,14 +50,14 @@ void	write_header_to_file(t_header *header, unsigned char **word)
 	write_int(&t, header->magic, word);
 	i = -1;
 	while (++i <= PROG_NAME_LENGTH && header->prog_name[i] && ++t)
-		add_unsigned_char(word, (unsigned char)header->prog_name[i], t);
+		add_unsigned_char(word, (unsigned char)header->prog_name[i], t - 1);
 	while (++i <= PROG_NAME_LENGTH && ++t)
 		add_unsigned_char(word, 0, t);
 	write_int(&t, 0, word);
 	write_int(&t, header->prog_size, word);
 	i = -1;
 	while (++i <= COMMENT_LENGTH && header->comment[i] && ++t)
-		add_unsigned_char(word, header->comment[i], t);
+		add_unsigned_char(word, header->comment[i], t - 1);
 	while (++i <= COMMENT_LENGTH && ++t)
 		add_unsigned_char(word, 0, t);
 	write_int(&t, 0, word);
@@ -100,7 +100,7 @@ void	make_code(t_address **head, t_header *header, unsigned char **word)
 	int				len;
 
 	write_header_to_file(header, word);
-	len = PROG_NAME_LENGTH + 4 + 4 + 4 + COMMENT_LENGTH;
+	len = PROG_NAME_LENGTH + 4 + 4 + 4 + 4 + COMMENT_LENGTH;
 	while (head && *head)
 	{
 		temp_addr = (*head)->next;

@@ -32,7 +32,7 @@ unsigned int	start_asm(int fd_from, unsigned char **word)
 	while (get_next_line(fd_from, &line))
 	{
 		row++;
-		if (line && line[0])
+		if (line && line[0] && line[0] != COMMENT_CHAR)
 			header->prog_size += parse_line(line, &head, row);
 		ft_strdel(&line);
 	}
