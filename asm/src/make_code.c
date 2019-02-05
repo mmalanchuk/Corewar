@@ -100,7 +100,7 @@ void	make_code(t_address **head, t_header *header, unsigned char **word)
 	int				len;
 
 	write_header_to_file(header, word);
-	len = PROG_NAME_LENGTH + 4 + 4 + 4 + 4 + COMMENT_LENGTH;
+	len = PROG_NAME_LENGTH + 4 + 4 + 4 + COMMENT_LENGTH + 4;
 	while (head && *head)
 	{
 		temp_addr = (*head)->next;

@@ -66,7 +66,8 @@ int				main(int argc, const char *argv[])
 	fd_to = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd_to < 0)
 		ft_printf("%s\n", strerror(errno));
-	write(fd_to, (char *)word, len + PROG_NAME_LENGTH + 12 + COMMENT_LENGTH);
+	ft_printf("Writing output program to %s\n", file_name);
+	write(fd_to, (char *)word, len + PROG_NAME_LENGTH + 16 + COMMENT_LENGTH);
 	ft_str_unsigned_del(&word);
 	close(fd_to);
 	return (0);
