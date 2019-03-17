@@ -18,7 +18,7 @@ char	*ft_strrev(char *str)
 	char	temp;
 	int		length;
 
-	PROTECT(str)
+	PROTECT(str);
 	length = 0;
 	while (str[length])
 		length++;

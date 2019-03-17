@@ -93,7 +93,7 @@ typedef struct s_op
 	uint8_t		arg_num;
 	t_arg_type	arg_type[MAX_ARGS_NUMBER];
 	uint8_t		op_code;
-	uint32_t	exec_cycles;
+	uint32_t	cycles_to_exec;
 	char		*description;
 	bool		change_carry;
 	bool		arg_codes;

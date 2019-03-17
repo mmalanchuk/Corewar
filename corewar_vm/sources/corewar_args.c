@@ -10,7 +10,7 @@ void 	set_defined_ids(t_env *vm, t_champ *lst)
 			if (lst->id > vm->players_num || PLAYER[lst->id - 1] != 0)
 				throw_error(FLAG_ERR_N, NULL);
 			else
-				PLAYER[lst->id - 1] = lst;
+				PLAYER[IDX(lst->id)] = lst;
 		}
 		lst = lst->next;
 	}
@@ -54,7 +54,6 @@ void	parse_arguments(char **argv, t_env *vm)
 	t_champ *lst;
 
 	lst = NULL;
-	++argv;
 	while (*argv)
 	{
 		if (is_cor_file(*argv))

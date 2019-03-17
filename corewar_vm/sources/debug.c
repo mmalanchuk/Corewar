@@ -1,6 +1,5 @@
 #include "corewar_vm.h"
 
-
 void	print_code(uint8_t *code, size_t size)
 {
 	int i ;
@@ -10,6 +9,8 @@ void	print_code(uint8_t *code, size_t size)
 	{
 		ft_printf(MAG"%02x ", code[i]);
 		i++;
+		if (i % 32 == 0)
+			ft_printf("\n");
 	}
 	ft_printf("\n"RESET);
 }
@@ -66,7 +67,6 @@ void	print_processes_list(t_process *lst)
 	while (lst)
 	{
 		ft_printf("******************************************************************************************************************************\n");
-		ft_printf("Process id :%d\n", lst->id);
 		print_register(lst->registry);
 		ft_printf("PC : %d\n", lst->pc);
 		ft_printf("Carry : %d\n", lst->carry);
@@ -74,6 +74,13 @@ void	print_processes_list(t_process *lst)
 	}
 	ft_printf("******************************************************************************************************************************\n");
 }
+
+/*
+ * print_dump
+ */
+//TODO move to utils or etc.
+//TODO fix colors or remove them
+//Bad idea using colors because of unknown code size
 
 void print_arena(t_env *vm)
 {
@@ -84,22 +91,23 @@ void print_arena(t_env *vm)
 
 	if (!vm)
 		return ;
-	id = vm->players_num - 1;
+	id = 0;
 	char	*colors[] = {GRN, MAG, CYN, RED};
 	step = MEM_SIZE / vm->players_num;
 	bot = 0;
-	while (pc < MEM_SIZE - 1)
+//	ft_printf("%#.4p: ", pc);
+while (pc < MEM_SIZE - 1)
 	{
-		if (pc % step == 0)
-			ft_putstr(colors[id]);
-		if (id >= 0 && pc == step * bot + PLAYER[id]->code_size)
-		{
-			ft_putstr(RESET);
-			id--;
-			bot++;
-		}
+//		if (pc % step == 0)
+//			ft_putstr(colors[id]);
+//		if (id < vm->players_num && pc == step * bot + PLAYER[id]->code_size)
+//		{
+//			ft_putstr(RESET);
+//			id++;
+//			bot++;
+//		}
 		if (pc % 32 == 0)
-			ft_putchar('\n');
+			ft_printf("\n%#.4p: ", pc);
 		ft_printf("%02x ", ARENA[pc]);
 		pc++;
 	}

@@ -20,7 +20,7 @@ int			ft_atoi_base(const char *str, int base)
 	res = 0;
 	if (base < 2 || base > 16 || !str)
 		return (0);
-	while (FT_EXSPACE(*str))
+	while (EXT_SP(*str))
 		str++;
 	sign = (*str == '-') ? -1 : 1;
 	if (*str == '-' || *str == '+')

@@ -16,7 +16,7 @@ char	*ft_strdup(const char *src)
 {
 	char	*dest;
 
-	PROTECT(src)
-	PROTECT(dest = ft_strnew(ft_strlen(src)))
+	PROTECT(src);
+	PROTECT(dest = ft_strnew(ft_strlen(src)));
 	return (ft_strcpy(dest, src));
 }

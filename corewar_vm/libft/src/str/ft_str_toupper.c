@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-void ft_str_toupper(char *str)
+void	ft_str_toupper(char *str)
 {
 	int		i;
 

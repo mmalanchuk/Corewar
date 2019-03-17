@@ -14,7 +14,7 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	PROTECT(s)
+	PROTECT(s);
 	while (*s)
 	{
 		if (*s == c)

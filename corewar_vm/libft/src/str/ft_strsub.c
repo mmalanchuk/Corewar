@@ -18,8 +18,8 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	size_t	index;
 
 	index = 0;
-	PROTECT(s)
-	PROTECT(ret = ft_strnew(len))
+	PROTECT(s);
+	PROTECT(ret = ft_strnew(len));
 	len += start;
 	while (start != len)
 	{

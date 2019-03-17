@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   str.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/04 16:16:57 by mmalanch          #+#    #+#             */
+/*   Updated: 2019/03/04 16:17:04 by mmalanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STR_H
 # define STR_H
 
@@ -31,10 +43,10 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_free(char *s1, char *s2);
 char	*ft_strtrim(char const *s);
 char	**ft_strsplit(char const *s, char c);
-void ft_str_toupper(char *str);
+void	ft_str_toupper(char *str);
 int		ft_count_words(char const *s, char c);
 char	*ft_strrev(char *str);
 int		ft_str_count_occur(const char *str, char c);
-
+bool	ft_is_numeric(const char *str);
 
 #endif

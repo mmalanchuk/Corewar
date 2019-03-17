@@ -2,9 +2,9 @@
 
 void op_lfork(t_env *vm, t_process *pointer)
 {
-	if (set_arg_types(vm, pointer) == false)
-		return(step_over(pointer));
+	if (get_arg_types(vm, pointer) == false)
+		return ;
 	get_args(vm, pointer, false);
-	copy_process(vm, pointer, PC + ARG[0]);
+	copy_carriage(vm, pointer, PC + ARG[0]);
 
 }

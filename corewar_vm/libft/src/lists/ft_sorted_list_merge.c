@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_sorted_list_merge.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/04 16:29:05 by mmalanch          #+#    #+#             */
+/*   Updated: 2019/03/04 16:29:07 by mmalanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_sorted_list_merge(t_list **alst, t_list *blst, int (*cmp)())
@@ -7,8 +19,7 @@ void	ft_sorted_list_merge(t_list **alst, t_list *blst, int (*cmp)())
 	t_list	*head2;
 	t_list	*tail;
 
-	if (!alst || !blst || !*cmp)
-		return;
+	PROTECT_VOID(!alst || !blst || !*cmp);
 	if (!*alst)
 	{
 		*alst = blst;

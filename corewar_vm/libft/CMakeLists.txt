@@ -1,0 +1,90 @@
+cmake_minimum_required(VERSION 3.9)
+project(libftprintf)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(libftprintf
+        inc/ft_printf/colors.h
+        inc/ft_printf/ft_printf.h
+        inc/ft_printf/ft_printf_parsers.h
+        inc/ft_printf/ft_printf_printers.h
+        inc/ft_printf/ft_printf_utils.h
+        inc/get_next_line.h
+        inc/libft.h
+        src/ft_printf/ft_printf.c
+        src/ft_printf/fpf_manage_char.c
+        src/ft_printf/fpf_manage_number.c
+        src/ft_printf/fpf_manage_string.c
+        src/ft_printf/ft_printf_parsers.c
+        src/ft_printf/ft_printf_printers.c
+        src/ft_printf/ft_printf_utils.c
+        src/ft_printf/ft_printf_core.c
+        src/num/ft_atoi.c
+        src/num/ft_atoi_base.c
+        src/mem/ft_bzero.c
+        src/num/ft_count_words.c
+        src/ctype/ft_isalnum.c
+        src/ctype/ft_isalpha.c
+        src/ctype/ft_isascii.c
+        src/ctype/ft_isdigit.c
+        src/ctype/ft_isprint.c
+        src/num/ft_itoa.c
+        src/num/ft_itoa_base.c
+        src/lists/ft_lstadd.c
+        src/lists/ft_lstdel.c
+        src/lists/ft_lstdelone.c
+        src/lists/ft_lstiter.c
+        src/lists/ft_lstmap.c
+        src/lists/ft_lstnew.c
+        src/mem/ft_memalloc.c
+        src/mem/ft_memccpy.c
+        src/mem/ft_memchr.c
+        src/mem/ft_memcmp.c
+        src/mem/ft_memcpy.c
+        src/mem/ft_memdel.c
+        src/mem/ft_memmove.c
+        src/mem/ft_memset.c
+        src/num/ft_numlen.c
+        src/printers/ft_putchar.c
+        src/printers/ft_putchar_fd.c
+        src/printers/ft_putendl.c
+        src/printers/ft_putendl_fd.c
+        src/printers/ft_putnbr.c
+        src/printers/ft_putnbr_fd.c
+        src/printers/ft_putstr.c
+        src/printers/ft_putstr_fd.c
+        src/str/ft_strcat.c
+        src/str/ft_strchr.c
+        src/str/ft_strclr.c
+        src/str/ft_strcmp.c
+        src/str/ft_strcpy.c
+        src/str/ft_strdel.c
+        src/str/ft_strdup.c
+        src/str/ft_strequ.c
+        src/str/ft_striter.c
+        src/str/ft_striteri.c
+        src/str/ft_strjoin.c
+        src/str/ft_strlcat.c
+        src/str/ft_strlen.c
+        src/str/ft_strmap.c
+        src/str/ft_strmapi.c
+        src/str/ft_strncat.c
+        src/str/ft_strncmp.c
+        src/str/ft_strncpy.c
+        src/str/ft_strnequ.c
+        src/str/ft_strnew.c
+        src/str/ft_strnstr.c
+        src/str/ft_strrchr.c
+        src/str/ft_strrev.c
+        src/str/ft_strsplit.c
+        src/str/ft_strstr.c
+        src/str/ft_strsub.c
+        src/str/ft_strtrim.c
+        src/ctype/ft_tolower.c
+        src/ctype/ft_toupper.c
+        src/get_next_line/get_next_line.c
+        src/printers/ft_perror.c
+        main.c inc/ft_printf/ft_printf_structs.h src/stack/stack_push.c src/stack/stack_pop.c src/stack/stack_peek.c src/ctype/ft_is_empty.c main.c src/ft_printf/ft_printf_core.c src/mem/ft_realloc.c src/mem/ft_memjoin.c src/str/ft_str_toupper.c src/lists/ft_list_push_back.c src/lists/ft_list_push_front.c src/lists/ft_list_size.c src/lists/ft_list_last.c src/lists/ft_lst_del_content.c src/lists/ft_list_at.c src/lists/ft_lst_reverse.c src/lists/ft_lst_foreach.c src/lists/ft_lst_find.c src/lists/ft_list_remove_if.c src/lists/ft_list_merge.c src/lists/ft_list_sort.c src/lists/ft_sorted_list_insert.c src/lists/ft_sorted_list_merge.c src/lists/ft_lst_print.c src/btree/btree_create_node.c src/btree/btree_print.c src/btree/btree_dfs_preorder.c src/btree/btree_dfs_inorder.c src/btree/btree_dfs_postorder.c src/btree/btree_insert_data.c src/btree/btree_search_data.c src/btree/btree_level_count.c inc/btree.h inc/lists.h inc/stack.h inc/str.h inc/mem.h inc/ctype.h inc/num.h inc/printers.h src/btree/btree_delone.c src/btree/btree_del.c inc/queue.h src/math/factorial.c inc/ft_math.h src/math/ft_pow.c src/stack/stack_size.c src/queque/create_queue.c src/queque/enqueue.c src/queque/dequeue.c src/queque/print_queue.c src/str/ft_strjoin_free.c src/str/ft_strndup.c src/queque/del_queue.c src/num/ft_strtol.c src/num/ft_in_base.c src/str/ft_str_count_occur.c src/str/ft_is_numeric.c)
+
+include_directories(inc)
+include_directories(inc/ft_printf)

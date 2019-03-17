@@ -13,17 +13,18 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-/**
- *  system headers
- */
+/*
+**  system headers
+*/
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <string.h>
 # include <stdbool.h>
 
-/**
- * my own headers
- */
+/*
+** my own headers
+*/
 
 # include "ft_printf/ft_printf.h"
 # include "get_next_line.h"
@@ -37,10 +38,13 @@
 # include "stack.h"
 # include "ft_math.h"
 # include "queue.h"
-/**
- * useful macros
- */
-# define FT_SPACE(x)	((x) == ' ' || (x) == '\n' || (x) == '\t' )
+
+/*
+** useful macros
+*/
+
+# define SPACE(x)	((x) == ' ' || (x) == '\n' || (x) == '\t' )
 # define PROTECT(x) if (!(x)) return (NULL);
+# define PROTECT_VOID(x) if (!(x)) return ;
 
 #endif

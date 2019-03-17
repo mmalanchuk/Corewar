@@ -16,7 +16,7 @@ char	*ft_strcpy(char *dest, const char *src)
 {
 	size_t i;
 
-	PROTECT(dest && src)
+	PROTECT(dest && src);
 	i = 0;
 	while (src[i])
 	{

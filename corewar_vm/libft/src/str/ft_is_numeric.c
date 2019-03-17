@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_is_numeric.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/30 18:31:16 by mmalanch          #+#    #+#             */
-/*   Updated: 2017/10/30 18:31:20 by mmalanch         ###   ########.fr       */
+/*   Created: 2019/03/04 16:18:43 by mmalanch          #+#    #+#             */
+/*   Updated: 2019/03/04 16:18:47 by mmalanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "str.h"
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+bool	ft_is_numeric(const char *str)
 {
-	char			*ret;
-	unsigned int	i;
+	int	i;
 
-	PROTECT(s && *f);
-	PROTECT(ret = ft_strnew(ft_strlen(s)));
+	PROTECT(str);
 	i = 0;
-	while (s[i])
+	if ((str[0] == '+' || str[0] == '-') && str[1])
+		i++;
+	while (str[i])
 	{
-		ret[i] = f(i, s[i]);
+		if (!ft_isdigit(str[i]))
+			return (false);
 		i++;
 	}
-	return (ret);
+	return (i != 0);
 }

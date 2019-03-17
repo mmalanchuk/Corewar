@@ -7,7 +7,7 @@
 
 bool	is_player_id(t_env *vm, int id)
 {
-	return (id > 0 && id <= vm->players_num);
+	return (id <= -1 && id <= -vm->players_num);
 }
 
 bool	is_registry_id(int id)
@@ -16,40 +16,62 @@ bool	is_registry_id(int id)
 }
 
 /**
- * ?????????????????????????????????????????
+ * Converts uint32_t to uint_8_t
  * @param value
  * @return
  */
 
-//TODO convert & write
-
-uint8_t *convert_int32_to_int8(int32_t value)
+uint8_t *convert_int32_to_int8(uint32_t value)
 {
+	uint8_t		*res;
+	int			i;
 
+	i = 3;
+	res = (uint8_t *)ft_memalloc(4 * sizeof(uint8_t));
+	while (i >= 0)
+	{
+		// val & 0xFF  value >> 8
+		res[i] = (uint8_t)(value % 256);
+		value /= 256;
+		i--;
+	}
+	return (res);
 }
+
+/**
+ * Write to ARENA array of uint8_t
+ * @param vm
+ * @param pointer
+ * @param value
+ */
 
 void	write_to_arena(t_env *vm, t_process *pointer, int32_t value)
 {
 	uint8_t *bytes;
 	int i;
+	int addr;
 
-	bytes = convert_int32_to_int8(value);
+	bytes = convert_int32_to_int8((uint32_t)value);
 	i = 0;
 	while (i < REG_SIZE)
 	{
-		ARENA[PC + ADDR + i] = bytes[i];
+		addr = mod_addr(PC + ADDR + i);
+		ARENA[addr] = bytes[i];
 		i++;
 	}
 }
 
-void	step_over(t_process *pointer)
+void copy_carriage(t_env *vm, t_process *pointer, int addr)
 {
-	PC += STEP;
-}
+	t_process *copy;
 
-//TODO copy carriage function
-
-void	copy_process(t_env *vm, t_process *pointer, int where)
-{
-
+	copy = (t_process *)ft_memalloc(sizeof(t_process));
+	ft_memcpy(copy->registry, pointer->registry, REG_NUMBER * sizeof(int32_t));
+	copy->carry = pointer->carry;
+	copy->last_live_cycle = pointer->last_live_cycle;
+	copy->pc = addr;
+	copy->is_ded = false;
+	copy->step = 0;
+	copy->cycles_left = 0;
+	to_process_list(&pointer, copy, vm);
 }

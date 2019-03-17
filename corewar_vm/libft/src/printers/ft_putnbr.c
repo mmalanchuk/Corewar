@@ -6,13 +6,13 @@
 /*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/09/26 18:44:09 by mmalanch          #+#    #+#             */
-/*   Updated: 2017/09/26 18:44:11 by mmalanch         ###   ########.fr       */
+/*   Updated: 2019/03/04 16:26:21 by mmalanch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_putnbr(int nb)
+void	ft_putnbr(int nb)
 {
 	unsigned num;
 

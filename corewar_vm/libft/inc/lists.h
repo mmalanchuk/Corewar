@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lists.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/04 16:12:58 by mmalanch          #+#    #+#             */
+/*   Updated: 2019/03/04 16:13:15 by mmalanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LISTS_H
 # define LISTS_H
 
 # include "libft.h"
 
-struct					s_list
+struct	s_list
 {
 	void				*content;
 	size_t				content_size;
@@ -20,12 +32,12 @@ void	ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 void	ft_list_push_back(t_list **begin_list, void *data);
 void	ft_list_push_front(t_list **begin_list, void *data);
-size_t ft_list_size(t_list *begin_list);
+size_t	ft_list_size(t_list *begin_list);
 t_list	*ft_list_last(t_list *list);
 void	ft_lst_del_content(void *ptr, size_t size);
 t_list	*ft_lst_get_index(t_list *lst, unsigned int index);
 void	ft_lst_reverse(t_list **alst);
-t_list * ft_lst_foreach(t_list *head, void *(*f)(void *));
+t_list	*ft_lst_foreach(t_list *head, void *(*f)(void *));
 void	ft_lst_foreach_subj(t_list *alst, void (*f)(void *));
 t_list	*ft_list_find(t_list *alst, void *data_ref, int (*cmp)());
 void	ft_list_remove_if(t_list **alst, void *target, int (*cmp)());

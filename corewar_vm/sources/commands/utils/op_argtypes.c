@@ -28,36 +28,37 @@ void	copy_arg_types(t_arg_type *args, t_arg_type *new_types)
  * @return				bool if valid
  */
 
-bool check_arg_types(const t_arg_type curr_types[], t_op op)
+bool valid_arg_types(const t_arg_type *curr_types, t_op *op)
 {
 	int i;
 
 	i = 0;
-	while (i < op.arg_num)
+	while (i < op->arg_num)
 	{
-		if (!(curr_types[i] & op.arg_type[i]))
+		if (curr_types[i] & op->arg_type[i] == 0)
 			return (false);
 		i++;
 	}
 	return (true);
 }
 
-void calc_pc_step(t_process * pointer)
+void calc_arg_len(t_process *pointer)
 {
 	int i;
 
 	i = 0;
-	STEP = 0;
-	while (i < OP.arg_num)
+	pointer->arg_len = 0;
+	while (i < OP->arg_num)
 	{
 		if (ARG_TYPE[i] == T_REG)
-			STEP += REG_IDX_SIZE;
+			pointer->arg_len += REG_IDX_SIZE;
 		else if (ARG_TYPE[i] == T_DIR)
-			STEP += DIR_SIZE >> OP.t_dir_size_diff;
+			pointer->arg_len += DIR_SIZE >> OP->t_dir_size_diff;
 		else if (ARG_TYPE[i] == T_IND)
-			STEP += IND_SIZE;
+			pointer->arg_len += IND_SIZE;
 		i++;
 	}
+
 }
 
 /**
@@ -66,17 +67,21 @@ void calc_pc_step(t_process * pointer)
  * @param pointer
  */
 
-bool set_arg_types(t_env *vm, t_process *pointer)
+bool get_arg_types(t_env *vm, t_process *pointer)
 {
-	t_arg_type temp[MAX_ARGS_NUMBER];
-
-	if (OP.arg_codes){
-		decode_type_code(ARG_TYPE, read_bytes(ARENA, PC, 1));
-		PC++;
+	if (OP->arg_codes){
+		decode_type_code(ARG_TYPE, read_bytes(ARENA, PC + STEP, 1));
+		STEP++;
 	}
 	else
-		copy_arg_types(ARG_TYPE, OP.arg_type);
-	calc_pc_step(pointer);
-	return (check_arg_types(temp, OP));
+		copy_arg_types(ARG_TYPE, OP->arg_type);
+
+	if (valid_arg_types(ARG_TYPE, OP) == false)
+	{
+		calc_arg_len(pointer);
+		STEP += pointer->arg_len;
+		return (false);
+	}
+	return (true);
 }
 

@@ -33,7 +33,8 @@ t_env	*init_vm()
 	vm->players_num = 0;
 	vm->cycles_to_die = CYCLE_TO_DIE;
 	vm->checks_count = 0;
-	vm->last_alive_id = 0;
+	vm->lives_in_period = 0;
+	vm->cursors = 0;
 	return (vm);
 }
 

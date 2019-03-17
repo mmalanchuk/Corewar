@@ -2,8 +2,8 @@
 
 void op_ldi(t_env *vm, t_process *pointer)
 {
-	if (set_arg_types(vm, pointer) == false)
-		return(step_over(pointer));
+	if (get_arg_types(vm, pointer) == false)
+		return ;
 	get_args(vm, pointer, false);
 	if (ARG_TYPE[0] == T_REG && is_registry_id(ARG[0]))
 		ARG[0] = REG[IDX(ARG[0])];

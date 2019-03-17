@@ -39,7 +39,7 @@ t_champ *new_player()
 	new->code = 0;
 	new->id = -1;
 	new->next = NULL;
-	new->last_live_cycles = -1;
+	new->last_live_cycle = -1;
 	new->lives = 0;
 	return (new);
 }
@@ -109,6 +109,7 @@ void parse_player(t_env *vm, char *filename, t_champ **lst, int *id)
 	player->id = *id;
 	*id = -1;
 	push_back_player(lst, player);
+//	push_front_player(lst, player);
 	vm->players_num++;
 	close(file.fd);
 }

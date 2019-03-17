@@ -8,16 +8,15 @@
 # define PLAYER (vm->players)
 # define ARENA (vm->arena)
 # define COR ".cor"
-# define IDX(X) (X - 1)
+# define IDX(X) ((X) - 1)
 # define PC (pointer->pc)
+# define STEP (pointer->step)
 # define ARG_TYPE (pointer->arg_type)
 # define REG (pointer->registry)
 # define ARG (pointer->args)
 # define CARRY (pointer->carry)
 # define OP (pointer->op)
 # define ADDR (pointer->addr)
-# define STEP (pointer->pc_step)
-# define CYCLES (pointer->op->exec_cycles)
 
 # define MAX_OPTIONS 2
 
@@ -37,24 +36,32 @@ typedef struct	s_player
 	char			*comment;
 	size_t			code_size;
 	unsigned char	*code;
-	int				last_live_cycles;
+	int				last_live_cycle;
 	unsigned int	lives;
 	struct s_player	*next;
 }				t_champ;
 
+/**
+ * cycles left - delay before op execute
+ * arg_len - length of arguments due to it coding octet
+ * step - calculate operation step within its arguments coding octet etc
+ * is_ded - carriage is dead
+ */
+
 typedef struct	s_process
 {
-	int					id;
 	int32_t				registry[REG_NUMBER];
 	int					pc;
-	int					pc_step;
+	int					step;
+	int					arg_len;
 	int					addr;
 	bool				carry;
-	t_op				op;
+	t_op				*op;
 	t_arg_type			arg_type[MAX_ARGS_NUMBER];
 	int32_t				args[MAX_ARGS_NUMBER];
 	int					cycles_left;
-	int					last_live_cycles;
+	int					last_live_cycle;
+	bool				is_ded;
 	struct s_process	*next;
 }				t_process;
 
@@ -63,18 +70,22 @@ typedef struct	s_cw_flags
 	int	n;
 	int	dump;
 }				t_cw_flags;
-
+/**
+ * lives_num number of lives since last cycle_to_die
+ */
 typedef	struct
 {
 	uint8_t		arena[MEM_SIZE];
 	t_cw_flags	flags;
-//	int			dump_cycles;
 	t_champ		*players[MAX_PLAYERS];
 	unsigned	players_num;
 	int			cycles_to_die;
 	int			checks_count;
-	int			last_alive_id;
+	int			cycles_after_check;
+	int			last_alive;
+	size_t		lives_in_period;
 	int			cycle;
+	int			cursors;
 }				t_env;
 
 typedef struct
@@ -112,16 +123,29 @@ void		throw_error(char *fmt, char *filename);
 
 
 uint32_t	read_uint32(t_file file);
-uint32_t	read_bytes(const OCTET *src, int pos, int n);
+uint32_t	read_bytes(const OCTET *src, int addr, int n);
 void		write_to_arena(t_env *vm, t_process *pointer, int32_t value);
-bool		set_arg_types(t_env *vm, t_process *pointer);
+bool		get_arg_types(t_env *vm, t_process *pointer);
 void		get_args(t_env *vm, t_process *pointer, bool return_ind_addr);
 
 
 void	step_over(t_process *pointer);
 
-void	copy_process(t_env *vm, t_process *pointer, int where);
+void copy_carriage(t_env *vm, t_process *pointer, int addr);
 
 t_process	*get_processes(t_env *vm);
+/*
+ * main cycle
+ */
+void	run_vm_cycle(t_env *vm, t_process *pointer);
 
+bool check_alive(t_env *vm, t_process *pointer);
+void get_current_op(t_env *vm, t_process *pointer);
+
+
+void	introduce_contestants(t_env *vm);
+void	announce_winner(t_env *vm, int winner_id);
+
+int32_t	mod_addr(int32_t addr);
+void to_process_list(t_process **lst, t_process *proc, t_env *vm);
 #endif

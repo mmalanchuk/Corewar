@@ -1,6 +1,6 @@
 #include "corewar_vm.h"
 
-#define DEBUG
+//#define DEBUG
 
 void	print_vm(t_env *vm);
 void	print_players_list(t_champ *players);

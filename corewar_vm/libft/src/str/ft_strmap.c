@@ -17,8 +17,8 @@ char	*ft_strmap(char const *s, char (*f)(char))
 	char	*ret;
 	int		i;
 
-	PROTECT(s && *f)
-	PROTECT(ret = ft_strnew(ft_strlen(s)))
+	PROTECT(s && *f);
+	PROTECT(ret = ft_strnew(ft_strlen(s)));
 	i = 0;
 	while (s[i])
 	{

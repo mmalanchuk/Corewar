@@ -2,8 +2,8 @@
 
 void op_sti(t_env *vm, t_process *pointer)
 {
-	if (set_arg_types(vm, pointer) == false)
-		return(step_over(pointer));
+	if (get_arg_types(vm, pointer) == false)
+		return ;
 	get_args(vm, pointer, false);
 	if(is_registry_id(ARG[0]))
 	{

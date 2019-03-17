@@ -20,7 +20,7 @@ int		ft_atoi(const char *str)
 
 	res = 0;
 	i = 0;
-	while (FT_EXSPACE(*str))
+	while (EXT_SP(*str))
 		str++;
 	sign = (*str == '-') ? -1 : 1;
 	if (*str == '-' || *str == '+')

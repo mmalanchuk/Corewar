@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_queue.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mmalanch <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/04 16:00:46 by mmalanch          #+#    #+#             */
+/*   Updated: 2019/03/04 16:01:01 by mmalanch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "queue.h"
 
 static void	print_node(t_qnode *front)
@@ -11,7 +23,7 @@ static void	print_node(t_qnode *front)
 	}
 }
 
-void	print_queue(t_queue *queue)
+void		print_queue(t_queue *queue)
 {
 	if (!queue)
 		return ;
