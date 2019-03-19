@@ -15,8 +15,26 @@ void	free_players(t_env *vm)
 		i++;
 	}
 }
-void	memory_free(t_env *vm)
+
+//TODO memory error with not NULL terminating proclst
+
+void	free_carriages(t_env *vm)
+{
+	t_process *del;
+	t_process *curr;
+
+	curr = vm->pointer;
+	while (curr)
+	{
+		del = curr;
+		curr= curr->next;
+		ft_memdel((void **)&del);
+	}
+}
+
+void memory_free(t_env *vm)
 {
 	free_players(vm);
+//	free_carriages(vm->pointer);
 	free(vm);
 }

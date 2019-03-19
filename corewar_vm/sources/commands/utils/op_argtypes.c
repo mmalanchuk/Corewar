@@ -42,20 +42,20 @@ bool valid_arg_types(const t_arg_type *curr_types, t_op *op)
 	return (true);
 }
 
-void calc_arg_len(t_process *pointer)
+void calc_arg_len(t_env *vm)
 {
 	int i;
 
 	i = 0;
-	pointer->arg_len = 0;
+	vm->pointer->arg_len = 0;
 	while (i < OP->arg_num)
 	{
 		if (ARG_TYPE[i] == T_REG)
-			pointer->arg_len += REG_IDX_SIZE;
+			vm->pointer->arg_len += REG_IDX_SIZE;
 		else if (ARG_TYPE[i] == T_DIR)
-			pointer->arg_len += DIR_SIZE >> OP->t_dir_size_diff;
+			vm->pointer->arg_len += DIR_SIZE >> OP->t_dir_size_diff;
 		else if (ARG_TYPE[i] == T_IND)
-			pointer->arg_len += IND_SIZE;
+			vm->pointer->arg_len += IND_SIZE;
 		i++;
 	}
 
@@ -64,10 +64,10 @@ void calc_arg_len(t_process *pointer)
 /**
  * read_arg_types read a 1 Byte to arg types and validate
  * @param vm
- * @param pointer
+ * @param vm->pointer
  */
 
-bool get_arg_types(t_env *vm, t_process *pointer)
+bool get_arg_types(t_env *vm)
 {
 	if (OP->arg_codes){
 		decode_type_code(ARG_TYPE, read_bytes(ARENA, PC + STEP, 1));
@@ -78,8 +78,8 @@ bool get_arg_types(t_env *vm, t_process *pointer)
 
 	if (valid_arg_types(ARG_TYPE, OP) == false)
 	{
-		calc_arg_len(pointer);
-		STEP += pointer->arg_len;
+		calc_arg_len(vm->pointer);
+		STEP += vm->pointer->arg_len;
 		return (false);
 	}
 	return (true);

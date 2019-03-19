@@ -21,16 +21,19 @@ bool need_check(t_env *vm)
  * before cycle sets initial ops to execute
  */
 
-void	set_carriage_init_ops(t_env *vm, t_process *pointer)
+void set_carriage_init_ops(t_env *vm)
 {
-	while (pointer)
+	t_process *curr;
+
+	curr = vm->pointer;
+	while (curr)
 	{
-		get_current_op(vm, pointer);
-		pointer = pointer->next;
+		get_current_op(vm);
+		curr= curr->next;
 	}
 }
 
-void	refresh_carriage(t_process *pointer)
+void refresh_carriage(t_env *vm)
 {
 	OP = NULL;
 	ADDR = 0;
@@ -38,42 +41,49 @@ void	refresh_carriage(t_process *pointer)
 	ft_bzero(ARG, sizeof(ARG));
 }
 
-void get_current_op(t_env *vm, t_process *pointer)
+void get_current_op(t_env *vm)
 {
 	int op_code;
 
 	op_code = read_bytes(ARENA, PC, OP_SIZE);
 	if (op_code >= 1 && op_code <= 16)
 		OP = &op_tab[IDX(op_code)];
-	pointer->cycles_left = OP ? OP->cycles_to_exec : 0;
+	vm->pointer->cycles_left = OP ? OP->cycles_to_exec : 0;
 }
 
-void exec_carriage_ops(t_env *vm, t_process *pointer)
+void	execute_command(t_env *vm)
 {
+	STEP = OP_SIZE;
+	if (OP)
+		OP->f_ptr(vm);
+	PC += STEP;
+}
+/*
+ * TODO ensure if correct process switching
+ * Because we execute the op of vm->pointer instead of curr */
+void exec_carriage_ops(t_env *vm)
+{
+	t_process *curr;
+
 	vm->cycle++;
 	vm->cycles_after_check++;
-	while (pointer)
+	curr = vm->pointer;
+	while (curr)
 	{
-		if (pointer->is_ded == false)
+		if (curr->cycles_left > 0)
+			curr->cycles_left--;
+		if (curr->cycles_left == 0)
 		{
-			if (pointer->cycles_left > 0)
-				pointer->cycles_left--;
-			if (pointer->cycles_left == 0)
-			{
-				STEP = OP_SIZE;
-				if (OP)
-					OP->f_ptr(vm, pointer);
-				PC += STEP;
-				refresh_carriage(pointer);
-				get_current_op(vm, pointer);
-			}
+			execute_command(vm);
+			refresh_carriage(vm);
+			get_current_op(vm);
 		}
-		pointer = pointer->next;
+		curr= curr->next;
 	}
 
 }
 
-void	print_dump(t_env *vm)
+void print_dump(t_env *vm)
 {
 	print_arena(vm);
 	memory_free(vm);
@@ -89,21 +99,22 @@ void	print_dump(t_env *vm)
 //TODO check if cycle runs when cycle to die <= 0
 //TODO cycle ends up earlier than it should
 
-void run_vm_cycle(t_env *vm, t_process *pointer)
+void run_vm_cycle(t_env *vm)
 {
-	bool	one_alive;
+	bool one_alive;
 
 	one_alive = true;
-	set_carriage_init_ops(vm, pointer);
+	set_carriage_init_ops(vm);
+
 	vm->last_alive = FT_ABS(REG[0]);
 	vm->cycles_after_check = 0;
 	while (one_alive)
 	{
 		if (vm->cycle == vm->flags.dump)
 			print_dump(vm);
-		exec_carriage_ops(vm, pointer);
+		exec_carriage_ops(vm);
 		if (need_check(vm))
-			one_alive = check_alive(vm, pointer);
+			one_alive = check_alive(vm);
 	}
 
 	print_arena(vm);

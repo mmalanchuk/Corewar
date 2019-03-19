@@ -1,10 +1,10 @@
 #include "corewar_vm.h"
 
-void op_st(t_env *vm, t_process *pointer)
+void op_st(t_env *vm)
 {
-	if (get_arg_types(vm, pointer) == false)
+	if (get_arg_types(vm) == false)
 		return ;
-	get_args(vm, pointer, true);
+	get_args(vm, true);
 	if (is_registry_id(ARG[0]))
 	{
 		if (ARG_TYPE[1] == T_REG && is_registry_id(ARG[1]))
@@ -12,7 +12,7 @@ void op_st(t_env *vm, t_process *pointer)
 		else if (ARG_TYPE[1] == T_IND)
 		{
 			ADDR = ARG[1] % IDX_MOD;
-			write_to_arena(vm, pointer, REG[IDX(ARG[0])]);
+			write_to_arena(vm, REG[IDX(ARG[0])]);
 		}
 	}
 }

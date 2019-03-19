@@ -4,7 +4,7 @@
  * g_cw_flags:
  * corewar options dispatcher
  * @@name - option name
- * @@f_ptr - function pointer that executes when a flag and its args are valid
+ * @@f_ptr - function vm->pointer that executes when a flag and its args are valid
  * to ADD new options append them in g_cw_flags definition below
  * and increment MAX_OPTIONS number
  */
@@ -49,8 +49,8 @@ int main(int argc, char **argv)
 	{
 		vm = init_vm();
 		parse_arguments(++argv, vm);
-		proclst = get_processes(vm);
-		play_corewar(vm, proclst);
+		vm->pointer = get_processes(vm);
+		play_corewar(vm);
 		memory_free(vm);
 	}
 	ft_printf(GRN"Program ended successfully!\n");

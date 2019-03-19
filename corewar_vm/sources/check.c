@@ -10,29 +10,38 @@
  */
 
 
-bool	need_to_remove(t_env *vm, t_process *pointer)
+bool	need_to_remove(t_env *vm)
 {
 	return (vm->cycles_to_die <= 0 ||
-			vm->cycle - pointer->last_live_cycle >=  vm->cycles_to_die);
+			vm->cycle - vm->pointer->last_live_cycle >=  vm->cycles_to_die);
 }
-
-//TODO write delete function
-
-bool	kill_carriages(t_env *vm, t_process * pointer)
+//TODO correct removing carriages to avoid leak
+bool	carriage_remove_if(t_env *vm)
 {
 	bool one_alive;
+	t_process *prev;
+	t_process *curr;
 
+	curr = vm->pointer;
 	one_alive = false;
-	while (pointer)
+	prev = NULL;
+	while (curr)
 	{
-		if (need_to_remove(vm, pointer))
+		if (need_to_remove(vm))
 		{
-			pointer->is_ded = true;
+			if (prev)
+				prev->next = curr->next;;
+			ft_memdel((void **) &curr);
 			vm->cursors--;
+			if (prev)
+				curr= prev->next;
 		}
 		else
+		{
+			prev = curr;
 			one_alive = true;
-		pointer = pointer->next;
+			curr= curr->next;
+		}
 	}
 	return(one_alive);
 }
@@ -49,12 +58,13 @@ void	reset_player_lives(t_env *vm)
 	}
 	vm->lives_in_period = 0;
 }
-bool check_alive(t_env *vm, t_process *pointer)
+
+bool check_alive(t_env *vm)
 {
 	bool	one_alive;
 
 	vm->checks_count++;
-	one_alive = kill_carriages(vm, pointer);
+	one_alive = carriage_remove_if(vm);
 	//Если MAX_CHECKS проверок спустя значение cycles_to_die не изменится, то оно будет принудительно уменьшено на значение CYCLE_DELTA.
 	if (vm->checks_count == MAX_CHECKS || vm->lives_in_period >= NBR_LIVE)
 	{

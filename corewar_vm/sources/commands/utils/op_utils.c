@@ -41,11 +41,11 @@ uint8_t *convert_int32_to_int8(uint32_t value)
 /**
  * Write to ARENA array of uint8_t
  * @param vm
- * @param pointer
+ * @param vm->pointer
  * @param value
  */
 
-void	write_to_arena(t_env *vm, t_process *pointer, int32_t value)
+void	write_to_arena(t_env *vm, int32_t value)
 {
 	uint8_t *bytes;
 	int i;
@@ -59,19 +59,19 @@ void	write_to_arena(t_env *vm, t_process *pointer, int32_t value)
 		ARENA[addr] = bytes[i];
 		i++;
 	}
+	ft_memdel((void **)&bytes);
 }
 
-void copy_carriage(t_env *vm, t_process *pointer, int addr)
+void copy_carriage(t_env *vm, int addr)
 {
 	t_process *copy;
 
 	copy = (t_process *)ft_memalloc(sizeof(t_process));
-	ft_memcpy(copy->registry, pointer->registry, REG_NUMBER * sizeof(int32_t));
-	copy->carry = pointer->carry;
-	copy->last_live_cycle = pointer->last_live_cycle;
+	ft_memcpy(copy->registry, vm->pointer->registry, REG_NUMBER * sizeof(int32_t));
+	copy->carry = vm->pointer->carry;
+	copy->last_live_cycle = vm->pointer->last_live_cycle;
 	copy->pc = addr;
-	copy->is_ded = false;
 	copy->step = 0;
 	copy->cycles_left = 0;
-	to_process_list(&pointer, copy, vm);
+	to_process_list(&vm->pointer, copy, vm);
 }

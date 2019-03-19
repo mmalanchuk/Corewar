@@ -9,14 +9,14 @@
 # define ARENA (vm->arena)
 # define COR ".cor"
 # define IDX(X) ((X) - 1)
-# define PC (pointer->pc)
-# define STEP (pointer->step)
-# define ARG_TYPE (pointer->arg_type)
-# define REG (pointer->registry)
-# define ARG (pointer->args)
-# define CARRY (pointer->carry)
-# define OP (pointer->op)
-# define ADDR (pointer->addr)
+# define PC (vm->pointer->pc)
+# define STEP (vm->pointer->step)
+# define ARG_TYPE (vm->pointer->arg_type)
+# define REG (vm->pointer->registry)
+# define ARG (vm->pointer->args)
+# define CARRY (vm->pointer->carry)
+# define OP (vm->pointer->op)
+# define ADDR (vm->pointer->addr)
 
 # define MAX_OPTIONS 2
 
@@ -26,7 +26,7 @@
  * uint32_t			is unsigned int
  */
 
-typedef uint8_t OCTET;
+typedef uint8_t BYTE;
 
 
 typedef struct	s_player
@@ -45,7 +45,6 @@ typedef struct	s_player
  * cycles left - delay before op execute
  * arg_len - length of arguments due to it coding octet
  * step - calculate operation step within its arguments coding octet etc
- * is_ded - carriage is dead
  */
 
 typedef struct	s_process
@@ -61,7 +60,6 @@ typedef struct	s_process
 	int32_t				args[MAX_ARGS_NUMBER];
 	int					cycles_left;
 	int					last_live_cycle;
-	bool				is_ded;
 	struct s_process	*next;
 }				t_process;
 
@@ -86,6 +84,7 @@ typedef	struct
 	size_t		lives_in_period;
 	int			cycle;
 	int			cursors;
+	t_process	*pointer;
 }				t_env;
 
 typedef struct
@@ -117,30 +116,29 @@ bool		is_registry_id(int id);
 
 
 void		corewar_usage();
-void 		play_corewar(t_env *vm, t_process *pointer);
+void 		play_corewar(t_env *vm);
 void		memory_free(t_env *vm);
 void		throw_error(char *fmt, char *filename);
 
 
 uint32_t	read_uint32(t_file file);
-uint32_t	read_bytes(const OCTET *src, int addr, int n);
-void		write_to_arena(t_env *vm, t_process *pointer, int32_t value);
-bool		get_arg_types(t_env *vm, t_process *pointer);
-void		get_args(t_env *vm, t_process *pointer, bool return_ind_addr);
+uint32_t	read_bytes(const BYTE *src, int addr, int n);
+void		write_to_arena(t_env *vm, int32_t value);
+bool		get_arg_types(t_env *vm);
+void		get_args(t_env *vm, bool return_ind_addr);
 
 
-void	step_over(t_process *pointer);
 
-void copy_carriage(t_env *vm, t_process *pointer, int addr);
+void copy_carriage(t_env *vm, int addr);
 
 t_process	*get_processes(t_env *vm);
 /*
  * main cycle
  */
-void	run_vm_cycle(t_env *vm, t_process *pointer);
+void	run_vm_cycle(t_env *vm);
 
-bool check_alive(t_env *vm, t_process *pointer);
-void get_current_op(t_env *vm, t_process *pointer);
+bool check_alive(t_env *vm);
+void get_current_op(t_env *vm);
 
 
 void	introduce_contestants(t_env *vm);

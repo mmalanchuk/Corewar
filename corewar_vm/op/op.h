@@ -99,7 +99,7 @@ typedef struct s_op
 	bool		arg_codes;
 	bool		t_dir_size_diff;
 	bool		idx_mod;
-	void		(*f_ptr)(struct s_env *vm, struct s_process *pointer);
+	void		(*f_ptr)(struct s_env *vm);
 }				t_op;
 
 extern t_op	op_tab[16];
