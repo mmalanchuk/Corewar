@@ -62,9 +62,10 @@ char	*find_name(char *str, int *col)
 	while (str[i + len] && str[i + len] != LABEL_CHAR && str[i + len] != ' '
 			&& str[i + len] != '\t' && ft_strchr(LABEL_CHARS, str[i + len]))
 		len++;
-	if (str[i + len] == ' ' || str[i + len] == '\t' || !str[i + len])
+	if (str[i + len] == ' ' || str[i + len] == '\t' || !str[i + len] ||
+		str[i + len] == COMMENT_CHAR)
 		return (NULL);
-	if (!ft_strchr(LABEL_CHARS, str[i + len] && str[i + len] != LABEL_CHAR))
+	if (!ft_strchr(LABEL_CHARS, str[i + len]) && str[i + len] != LABEL_CHAR)
 		return (ft_strdup(""));
 	res = ft_strnew(len);
 	(*col) += len;

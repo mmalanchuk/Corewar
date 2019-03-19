@@ -98,7 +98,7 @@ char		add_name_and_comment(t_header *header, int fd, int *l,
 		(name_or_comment != 2) ? (temp = get_name_or_comment(line, l,
 	".comment", fd)) : ft_handle_errors(make_error(*l, 0, 21, NULL), NULL);
 	else
-		ft_handle_errors(make_error(*line, 0, 17, NULL), NULL);
+		ft_handle_errors(make_error(*l, 0, 17, NULL), NULL);
 	(res == 1) ? ft_strcpy(header->prog_name, temp) :
 									ft_strcpy(header->comment, temp);
 	ft_strdel(&temp);
