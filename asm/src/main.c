@@ -57,15 +57,16 @@ int				main(int argc, const char *argv[])
 		argv = NULL;
 	word = ft_str_unsigned_new(0);
 	fd_from = open(argv[1], O_RDONLY);
-	if (fd_from < 0 || read(fd_from, 0, 0) < 0)
-		ft_printf("%s\n", strerror(errno));
+	if ((fd_from < 0 || read(fd_from, 0, 0) < 0) &&
+		ft_printf("Error - %s: %s\n", argv[1], strerror(errno)))
+		exit(1);
 	file_name = ft_strdup_until((char *)argv[1], '.');
 	ft_strconcat(&file_name, ".cor", ft_strlen(file_name), 4);
 	len = start_asm(fd_from, &word);
 	close(fd_from);
 	fd_to = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (fd_to < 0)
-		ft_printf("%s\n", strerror(errno));
+	if (fd_to < 0 && ft_printf("Error - %s: %s\n", file_name, strerror(errno)))
+		exit(1);
 	ft_printf("Writing output program to %s\n", file_name);
 	write(fd_to, (char *)word, len + PROG_NAME_LENGTH + 16 + COMMENT_LENGTH);
 	ft_str_unsigned_del(&word);
